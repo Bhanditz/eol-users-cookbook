@@ -18,5 +18,6 @@
 
 @test "group dotfiles has 2 users only" {
   run cat /etc/group
-  echo "$output" | grep sysadmin | grep john | grep jane |grep -v varnish
+  echo "$output" | grep dotfiles | grep john | grep vagrant
+  echo "$output" | grep dotfiles | grep john | grep vagrant |grep -v jane
 }
