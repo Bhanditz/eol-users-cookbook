@@ -22,7 +22,7 @@ action :remove do
                    "search unless you install the chef-solo-search cookbook.")
   else
     search(new_resource.data_bag,
-           "NOT id:groups AND action:remove") do |rm_user|
+           "action:remove AND NOT id:groups") do |rm_user|
       user rm_user["username"] ||= rm_user["id"] do
         action :remove
       end
@@ -39,14 +39,14 @@ action :create do
                    "the chef-solo-search cookbook.")
   else
     search(new_resource.data_bag,
-           "NOT id:groups AND name:#{new_resource.search_group} "\
+           "name:#{new_resource.search_group} "\
            "AND NOT action:remove") do |u|
       u["username"] ||= u["id"]
       group = u["groups"].select do |g|
         g["name"] == new_resource.search_group
       end
       nodes = group.first["nodes"]
-      if nodes == [] || nodes.include?(u["username"])
+      if nodes == [] || nodes.include?(node.name)
         security_group << u["username"]
       end
       # Set home_basedir based on platform_family

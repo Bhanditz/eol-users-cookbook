@@ -17,7 +17,7 @@ bag in this recipe is `eol-users`. See USAGE.
 Usage
 -----
 
-To configure your users add following to your cookbook: 
+To configure your users add following to your cookbook:
 
 ```ruby
 include_recipe "eol-users"
@@ -28,8 +28,34 @@ Use knife to create a data bag for eol-users.
 ```bash
 $ knife data bag create eol-users
 ```
+Create groups configuration in data_bag/eol-users/groups.json
 
-Create a user in the data_bag/users/ directory.
+(Only groups mentioned in this file will be created and configured)
+
+``` javascript
+{
+  "id": "groups",
+  "groups": [
+    { 
+      "group_name": "sysadmin",
+      "group_id": 2300,
+      "group_action": ["remove", "create"]
+    },
+    {
+      "group_name": "docker",
+      "group_id": 2331,
+      "group_action": ["remove", "create"]
+    },
+    {
+      "group_name": "dba",
+      "group_id": 2332,
+      "group_action": ["remove", "create"]
+    }
+  ]
+}
+```
+
+Create a user in the data_bag/eol-users/ directory.
 
 The main difference from users cookbook data bags -- for every user groups
 you have to include not only groups name, but also nodes where this group
@@ -129,25 +155,33 @@ And then change the action to "remove":
 }
 ```
 
-The latest version of knife supports reading data bags from a file and automatically looks in a directory called +data_bags+ in the current directory. The "bag" should be a directory with JSON files of each item. For the above:
+The latest version of knife supports reading data bags from a file
+and automatically looks in a directory called +data_bags+ in the
+current directory. The "bag" should be a directory with JSON files
+of each item. For the above:
 
 ```bash
 $ mkdir data_bags/users
 $EDITOR data_bags/users/bofh.json
 ```
 
-Paste the user's public SSH key into the ssh_keys value. Also make sure the uid is unique, and if you're not using bash, that the shell is installed. The default search, and Unix group is sysadmin.
+Paste the user's public SSH key into the ssh_keys value. Also make
+sure the uid is unique, and if you're not using bash, that the shell
+is installed. The default search, and Unix group is sysadmin.
 
-The recipe, by default, will also create the sysadmin group. If you're using the opscode sudo cookbook, they'll have sudo access in the default site-cookbooks template. They won't have passwords though, so the sudo cookbook's template needs to be adjusted so the sysadmin group has NOPASSWD.
+The recipe, can also create the sysadmin group for users. If
+you're using the opscode sudo cookbook, they'll have sudo access in
+the default site-cookbooks template. They won't have passwords though,
+so the sudo cookbook's template needs to be adjusted so the sysadmin
+group has NOPASSWD.
 
-The sysadmin group will be created with GID 2300. This may become an attribute at a later date.
-
-The Apache cookbook can set up authentication using OpenIDs, which is set up using the openid key here. See the Opscode 'apache2' cookbook for more information about this.
-
+The sysadmin group will be created with GID 2300. This may become an
+attribute at a later date.
 
 License & Authors
 -----------------
 - Author:: [Dmitry Mozzherin][1]
+The code was heavily borrowed from [opscode/users cookbook][2]
 
 ```text
 Copyright:: 2015, Marine Biological Laboratory
@@ -155,4 +189,5 @@ Copyright:: 2015, Marine Biological Laboratory
 Licensed under the [MIT License][2]
 
 [1]: https://github.com/dimus
-[2]: https://github.com/EOL/eol-users-cookbook/blob/master/LICENSE
+[2]: https://github.com/opscode-cookbooks/users
+[3]: https://github.com/EOL/eol-users-cookbook/blob/master/LICENSE
