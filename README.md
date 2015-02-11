@@ -36,7 +36,7 @@ Create groups configuration in data_bag/eol-users/groups.json
 {
   "id": "groups",
   "groups": [
-    { 
+    {
       "group_name": "sysadmin",
       "group_id": 2300,
       "group_action": ["remove", "create"]
@@ -70,8 +70,8 @@ that user will be member of the group on all nodes. For example:
 }
 ```
 
-When using an [Omnibus ruby](http://tickets.opscode.com/browse/CHEF-2848), 
-one can specify an optional password hash. This will be used as the 
+When using an [Omnibus ruby](http://tickets.opscode.com/browse/CHEF-2848),
+one can specify an optional password hash. This will be used as the
 user's password.
 
 The hash can be generated with the following command.
@@ -80,7 +80,7 @@ The hash can be generated with the following command.
 $ openssl passwd -1 "plaintextpassword"
 ```
 
-Note: The ssh_keys attribute below can be either a String or an Array. 
+Note: The ssh_keys attribute below can be either a String or an Array.
 However, we are recommending the use of an Array.
 
 ```javascript
@@ -112,8 +112,8 @@ However, we are recommending the use of an Array.
 }
 ```
 
-You can pass any action listed in the 
-[user](http://docs.opscode.com/chef/resources.html#id237) 
+You can pass any action listed in the
+[user](http://docs.opscode.com/chef/resources.html#id237)
 resource for Chef via the "action" option. For Example:
 
 Lock a user, johndoe1.
@@ -181,14 +181,16 @@ attribute at a later date.
 
 License & Authors
 -----------------
-- Author:: [Dmitry Mozzherin][1]
+
+Author: [Dmitry Mozzherin][1]
+
 The code was heavily borrowed from [opscode/users cookbook][2]
 
-```text
-Copyright:: 2015, Marine Biological Laboratory
+Copyright: 2015, [Marine Biological Laboratory][3]
 
-Licensed under the [MIT License][2]
+Licensed under the [MIT License][4]
 
 [1]: https://github.com/dimus
 [2]: https://github.com/opscode-cookbooks/users
-[3]: https://github.com/EOL/eol-users-cookbook/blob/master/LICENSE
+[3]: http://mbl.edu
+[4]: https://github.com/EOL/eol-users-cookbook/blob/master/LICENSE
