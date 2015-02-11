@@ -16,6 +16,10 @@ rescue NameError
   return false
 end
 
+def user_key_type(user_data)
+  user_data["ssh_public_key"].include?("ssh-rsa") ? "rsa" : "dsa"
+end
+
 action :remove do
   if Chef::Config[:solo] && !chef_solo_search_installed?
     Chef::Log.warn("This recipe uses search. Chef Solo does not support "\
@@ -109,23 +113,8 @@ action :create do
           only_if { u["ssh_keys"] }
         end
 
-        if u["ssh_private_key"]
-          key_type = "dsa"
-          if u["ssh_private_key"].include?("BEGIN RSA PRIVATE KEY")
-            key_type = "rsa"
-          end
-          template "#{home_dir}/.ssh/id_#{key_type}" do
-            source "private_key.erb"
-            cookbook new_resource.cookbook
-            owner u["id"]
-            group u["gid"] || u["id"]
-            mode "0400"
-            variables private_key: u["ssh_private_key"]
-          end
-        end
-
         if u["ssh_public_key"]
-          key_type = u["ssh_public_key"].include?("ssh-rsa") ? "rsa" : "dsa"
+          key_type = user_key_type(u)
           template "#{home_dir}/.ssh/id_#{key_type}.pub" do
             source "public_key.pub.erb"
             cookbook new_resource.cookbook

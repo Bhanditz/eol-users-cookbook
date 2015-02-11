@@ -13,6 +13,19 @@ Requirements
 A data bag populated with user objects must exist. The default data
 bag in this recipe is `eol-users`. See USAGE.
 
+Testing
+-------
+
+```bash
+$kitchen test
+```
+or if you prefer to do it step by step
+
+```bash
+kitchen create
+kitchen converge
+kitchen verify
+```
 
 Usage
 -----
