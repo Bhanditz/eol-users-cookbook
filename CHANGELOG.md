@@ -1,13 +1,9 @@
-eol-users-wrapper CHANGELOG
+eol-users CHANGELOG
 ===========================
 
-This file is used to list changes made in each version of the eol-users-wrapper cookbook.
-
-0.1.0
+This file is used to list changes made in each version of the eol-users cookbook.
+0.1.4
 -----
-- [your_name] - Initial release of eol-users-wrapper
+- [dimus][1] - node-specific data bag search
 
-- - -
-Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
-
-The [Github Flavored Markdown page](http://github.github.com/github-flavored-markdown/) describes the differences between markdown on github and standard markdown.
+[1]: https://github.com/dimus

@@ -13,5 +13,5 @@ suites:
   - name: default
     data_bags_path: "test/integration/data_bags"
     run_list:
-      - recipe[eol-users-wrapper::default]
+      - recipe[eol-users::default]
     attributes:

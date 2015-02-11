@@ -1,4 +1,4 @@
-eol-users-wrapper Cookbook
+eol-users Cookbook
 ==============
 Creates nodes' specific users from databag configuration file
 
@@ -11,7 +11,7 @@ Requirements
 - FreeBSD
 
 A data bag populated with user objects must exist. The default data
-bag in this recipe is `eol-users-wrapper`. See USAGE.
+bag in this recipe is `eol-users`. See USAGE.
 
 
 Usage
@@ -20,13 +20,13 @@ Usage
 To configure your users add following to your cookbook: 
 
 ```ruby
-include_recipe "eol-users-wrapper"
+include_recipe "eol-users"
 ```
 
-Use knife to create a data bag for eol-users-wrapper.
+Use knife to create a data bag for eol-users.
 
 ```bash
-$ knife data bag create eol-users-wrapper
+$ knife data bag create eol-users
 ```
 
 Create a user in the data_bag/users/ directory.
@@ -155,4 +155,4 @@ Copyright:: 2015, Marine Biological Laboratory
 Licensed under the [MIT License][2]
 
 [1]: https://github.com/dimus
-[2]: https://github.com/EOL/eol-users-wrapper-cookbook/blob/master/LICENSE
+[2]: https://github.com/EOL/eol-users-cookbook/blob/master/LICENSE

@@ -1,10 +1,10 @@
 {
+  "id": "jane",
   "groups": [{ "name": "sysadmin", "nodes": [] }],
   "htpasswd": "$apr1$iZDss.",
   "shell": "/bin/bash",
   "ssh_keys": ["ssh-rsa AAAAB3NzaC1yc2EAAAABAADIwwQ== jane@example.org.local"
 ],
-  "id": "jane",
   "nagios": {
     "pager": "jane@example.org",
     "email": "jane@example.org"

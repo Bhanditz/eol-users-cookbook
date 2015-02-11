@@ -1,9 +1,7 @@
 DEPENDENCIES
-  eol-users-wrapper
+  eol-users
     path: .
     metadata: true
 
 GRAPH
-  eol-users-wrapper (0.1.3)
-    users (~> 1.7)
-  users (1.7.0)
+  eol-users (0.1.4)

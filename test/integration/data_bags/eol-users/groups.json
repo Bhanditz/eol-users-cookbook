@@ -1,0 +1,15 @@
+{
+  "id": "groups",
+  "groups": [
+    { 
+      "group_name": "sysadmin",
+      "group_id": 2300,
+      "group_action": ["remove", "create"]
+    },
+    {
+      "group_name": "dotfiles",
+      "group_id": 2301,
+      "group_action": ["remove", "create"]
+    }
+  ]
+}
