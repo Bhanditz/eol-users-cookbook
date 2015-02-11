@@ -57,11 +57,12 @@ Create groups configuration in data_bag/eol-users/groups.json
 
 Create a user in the data_bag/eol-users/ directory.
 
-The main difference from users cookbook data bags -- for every user groups
-you have to include not only groups name, but also nodes where this group
-should be installed for a particular user. For example:
+The main difference from opscode/users cookbook data bags -- for every user
+groups you have to include not only groups name, but also nodes where this group
+should be installed for a particular user. Empty nodes array will make sure
+that user will be member of the group on all nodes. For example:
 
-```javascript```
+```javascript
 {
   "groups": [ { "name": "sysadmin", "nodes":[] },
               { "name": "docker", "nodes": ["docker1","docker2"] },
