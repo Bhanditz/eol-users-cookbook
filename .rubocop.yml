@@ -1,0 +1,11 @@
+AllCops:
+  Exclude:
+    - .kitchen/**
+    - .bundle/**
+    - metadata.rb
+    - bundle_bin/**
+    - berks-cookbooks/**
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+Style/DotPosition:
+  EnforcedStyle: trailing

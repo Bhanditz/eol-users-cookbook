@@ -1,68 +1,158 @@
 eol-users-wrapper Cookbook
-==========================
-TODO: Enter the cookbook description here.
+==============
+Creates nodes' specific users from databag configuration file
 
-e.g.
-This cookbook makes your favorite breakfast sandwich.
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
+### Platforms
+- Debian, Ubuntu
+- CentOS, Red Hat, Fedora
+- FreeBSD
 
-e.g.
-#### packages
-- `toaster` - eol-users-wrapper needs toaster to brown your bagel.
+A data bag populated with user objects must exist. The default data
+bag in this recipe is `eol-users-wrapper`. See USAGE.
 
-Attributes
-----------
-TODO: List your cookbook attributes here.
-
-e.g.
-#### eol-users-wrapper::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['eol-users-wrapper']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
 
 Usage
 -----
-#### eol-users-wrapper::default
-TODO: Write usage instructions for each cookbook.
 
-e.g.
-Just include `eol-users-wrapper` in your node's `run_list`:
+To configure your users add following to your cookbook: 
 
-```json
+```ruby
+include_recipe "eol-users-wrapper"
+```
+
+Use knife to create a data bag for eol-users-wrapper.
+
+```bash
+$ knife data bag create eol-users-wrapper
+```
+
+Create a user in the data_bag/users/ directory.
+
+The main difference from users cookbook data bags -- for every user groups
+you have to include not only groups name, but also nodes where this group
+should be installed for a particular user. For example:
+
+```javascript```
 {
-  "name":"my_node",
-  "run_list": [
-    "recipe[eol-users-wrapper]"
-  ]
+  "groups": [ { "name": "sysadmin", "nodes":[] },
+              { "name": "docker", "nodes": ["docker1","docker2"] },
+              { "name": "dba", "nodes": ["mariadb1"] } ]
 }
 ```
 
-Contributing
-------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
+When using an [Omnibus ruby](http://tickets.opscode.com/browse/CHEF-2848), 
+one can specify an optional password hash. This will be used as the 
+user's password.
 
-e.g.
-1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
-3. Write your change
-4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
-6. Submit a Pull Request using Github
+The hash can be generated with the following command.
 
-License and Authors
--------------------
-Authors: TODO: List authors
+```bash
+$ openssl passwd -1 "plaintextpassword"
+```
+
+Note: The ssh_keys attribute below can be either a String or an Array. 
+However, we are recommending the use of an Array.
+
+```javascript
+{
+  "id": "bofh",
+  "ssh_keys": "ssh-rsa AAAAB3Nz...yhCw== bofh",
+}
+```
+
+```javascript
+{
+  "id": "bofh",
+  "password": "$1$d...HgH0",
+  "ssh_keys": [
+    "ssh-rsa AAA123...xyz== foo",
+    "ssh-rsa AAA456...uvw== bar"
+  ],
+  "groups": [ { "name": "sysadmin", "nodes":[] },
+              { "name": "docker", "nodes": ["docker1","docker2"] },
+              { "name": "dba", "nodes": ["mariadb1"] } ],
+  "uid": 2001,
+  "shell": "\/bin\/bash",
+  "comment": "BOFH",
+  "nagios": {
+    "pager": "8005551212@txt.att.net",
+    "email": "bofh@example.com"
+  },
+  "openid": "bofh.myopenid.com"
+}
+```
+
+You can pass any action listed in the 
+[user](http://docs.opscode.com/chef/resources.html#id237) 
+resource for Chef via the "action" option. For Example:
+
+Lock a user, johndoe1.
+
+```bash
+$ knife data bag edit users johndoe1
+```
+
+And then change the action to "lock":
+
+```javascript
+{
+  "id": "johndoe1",
+  "groups": [ { "name": "sysadmin", "nodes":[] },
+              { "name": "docker", "nodes": ["docker1","docker2"] },
+              { "name": "dba", "nodes": ["mariadb1"] } ],
+  "uid": 2002,
+  "action": "lock", // <--
+  "comment": "User violated access policy"
+}
+```
+
+Remove a user, johndoe1.
+
+```bash
+$ knife data bag edit users johndoe1
+```
+
+And then change the action to "remove":
+
+```javascript
+{
+  "id": "johndoe1",
+  "groups": [ { "name": "sysadmin", "nodes":[] },
+              { "name": "docker", "nodes": ["docker1","docker2"] },
+              { "name": "dba", "nodes": ["mariadb1"] } ],
+  "uid": 2002,
+  "action": "remove", // <--
+  "comment": "User quit, retired, or fired."
+}
+```
+
+The latest version of knife supports reading data bags from a file and automatically looks in a directory called +data_bags+ in the current directory. The "bag" should be a directory with JSON files of each item. For the above:
+
+```bash
+$ mkdir data_bags/users
+$EDITOR data_bags/users/bofh.json
+```
+
+Paste the user's public SSH key into the ssh_keys value. Also make sure the uid is unique, and if you're not using bash, that the shell is installed. The default search, and Unix group is sysadmin.
+
+The recipe, by default, will also create the sysadmin group. If you're using the opscode sudo cookbook, they'll have sudo access in the default site-cookbooks template. They won't have passwords though, so the sudo cookbook's template needs to be adjusted so the sysadmin group has NOPASSWD.
+
+The sysadmin group will be created with GID 2300. This may become an attribute at a later date.
+
+The Apache cookbook can set up authentication using OpenIDs, which is set up using the openid key here. See the Opscode 'apache2' cookbook for more information about this.
+
+
+License & Authors
+-----------------
+- Author:: [Dmitry Mozzherin][1]
+
+```text
+Copyright:: 2015, Marine Biological Laboratory
+
+Licensed under the [MIT License][2]
+
+[1]: https://github.com/dimus
+[2]: https://github.com/EOL/eol-users-wrapper-cookbook/blob/master/LICENSE
