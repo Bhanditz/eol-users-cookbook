@@ -1,4 +1,4 @@
-describe "dimus-base::default" do
+describe "eol-users-wrapper::default" do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
 
   before do
