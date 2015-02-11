@@ -11,11 +11,11 @@ actions :create, :remove
 #   default is to allow the OS to pick next
 # :cookbook is the name of the cookbook that the authorized_keys
 #   template should be found in
-attribute :data_bag, kind_of: String, default: "users"
+attribute :data_bag, kind_of: String, default: "eol-users"
 attribute :search_group, kind_of: String, name_attribute: true
 attribute :group_name, kind_of: String, name_attribute: true
 attribute :group_id, kind_of: Integer
-attribute :cookbook, kind_of: String, default: "users"
+attribute :cookbook, kind_of: String, default: "eol-users"
 
 def initialize(*args)
   super
