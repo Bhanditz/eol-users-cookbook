@@ -50,9 +50,8 @@ action :create do
         g["name"] == new_resource.search_group
       end
       nodes = group.first["nodes"]
-      if nodes == [] || nodes.include?(node.name)
-        security_group << u["username"]
-      end
+      next unless nodes == [] || nodes.include?(node.name)
+      security_group << u["username"]
       # Set home_basedir based on platform_family
       case node["platform_family"]
       when "mac_os_x"
