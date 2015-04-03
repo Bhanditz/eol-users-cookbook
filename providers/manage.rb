@@ -83,6 +83,7 @@ action :create do
         gid u["gid"] if u["gid"]
         shell u["shell"]
         comment u["comment"]
+        system true if u["system"]
         password u["password"] if u["password"]
         if home_dir == "/dev/null"
           supports manage_home: false
